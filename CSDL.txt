@@ -4,7 +4,7 @@ CREATE TABLE SINH_VIEN (
    maSV varchar(20) PRIMARY KEY,
     hoTen varchar(50),
     ngaySinh date,
-    gioiTinh varchar(20)
+    gioiTinh varchar(20),
     diaChi text,
     email varchar(50),
     sdt varchar(20),
@@ -17,7 +17,7 @@ CREATE TABLE GIAOVIEN (
     maGV varchar(20) PRIMARY KEY,
     hoTen varchar(50),
     ngaySinh date,
-    gioiTinh varchar(20)
+    gioiTinh varchar(20),
     diaChi text,
     trinhDo varchar(50),
     email varchar(50),
