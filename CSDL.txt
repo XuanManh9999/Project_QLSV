@@ -1,0 +1,86 @@
+Thực thể chính: 
+-- Chạy 2
+CREATE TABLE SINH_VIEN (
+   maSV varchar(20) PRIMARY KEY,
+    hoTen varchar(50),
+    ngaySinh date,
+    gioiTinh varchar(20)
+    diaChi text,
+    email varchar(50),
+    sdt varchar(20),
+    trangThai varchar(50),
+     maDT varchar(20),
+    FOREIGN KEY (maDT) REFERENCES CHUONG_TRINH_DAO_TAO(maDT)
+)
+-- Chạy 3
+CREATE TABLE GIAOVIEN (
+    maGV varchar(20) PRIMARY KEY,
+    hoTen varchar(50),
+    ngaySinh date,
+    gioiTinh varchar(20)
+    diaChi text,
+    trinhDo varchar(50),
+    email varchar(50),
+    sdt varchar(20)
+)
+-- Chạy 1
+CREATE TABLE CHUONG_TRINH_DAO_TAO (
+    maDT varchar(20) PRIMARY KEY,
+    tenCT varchar(200),
+    khoa varchar(50),
+    thoiGian varchar(50)
+)
+-- Chạy 4
+CREATE TABLE MON_HOC (
+    maMH varchar(20) PRIMARY KEY,
+    tenMH varchar(200),
+    soTC int,
+    thuocKhoa varchar(50),
+    madt varchar(20),
+    FOREIGN KEY (madt) REFERENCES CHUONG_TRINH_DAO_TAO(madt)
+)
+-- Chạy 5
+CREATE TABLE DIEM (
+    maDiem varchar(20) PRIMARY KEY,
+    maMH varchar(20),
+    masv varchar(20),
+    thangDiem10 int check(thangDiem10 >= 0 and thangDiem10 <= 10),
+    thangDiemChu varchar(20),
+    ghiChu text,
+    FOREIGN KEY (maMH) REFERENCES MON_HOC (maMH),
+    FOREIGN KEY (masv) REFERENCES SINH_VIEN (masv)
+)
+-- Chạy 6
+CREATE TABLE LICH_THI (
+	maLT varchar(20) PRIMARY KEY,
+    ngayThi date,
+    phongThi varchar(50),
+    hinhThucThi varchar(100),
+    maMH varchar(20),
+    FOREIGN KEY (maMH) REFERENCES mon_hoc(maMH)
+)
+-- Chạy 7
+CREATE TABLE KHEN_THUONG (
+    maKT varchar(20) PRIMARY KEY,
+    danhHieu varchar(200),
+    ngayKhenThuong date
+)
+-- Chạy 8
+CREATE TABLE DANG_KY( maSV varchar(20), maMH varchar(20), 
+FOREIGN KEY (maSV) REFERENCES sinh_vien(maSV), 
+FOREIGN KEY (maMH) REFERENCES mon_hoc(maMH) );
+-- Chạy 9
+CREATE TABLE DUOC
+(
+ maSV varchar(20), 
+ maKT varchar(20), 
+ FOREIGN KEY (maSV) REFERENCES sinh_vien(maSV), 
+ FOREIGN KEY (maKT) REFERENCES khen_thuong(maKT) 
+);
+-- Chạy 10
+CREATE TABLE DAY (
+    maGV varchar(20),
+    maMH varchar(20),
+    FOREIGN KEY (maGV) REFERENCES giaovien(maGV),
+    FOREIGN KEY (maMH) REFERENCES mon_hoc(maMH)
+)
