@@ -84,3 +84,5 @@ CREATE TABLE DAY (
     FOREIGN KEY (maGV) REFERENCES giaovien(maGV),
     FOREIGN KEY (maMH) REFERENCES mon_hoc(maMH)
 )
+-- Công Nghệ Sử Dụng
+MySQL, JDK 20, jdbc 8.1.0, Kcontrols2.0.

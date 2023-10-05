@@ -324,6 +324,10 @@ public class pnQuanlyMonHoc extends javax.swing.JFrame {
             !txtKhoa.getText().equals("")&&
             !txtMaMH.getText().equals("")
            ) {
+            if (maCTDT.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maCTDT = String.valueOf(jComboBox1.getSelectedItem());
+            }
             MonHoc mh = new MonHoc(txtMaMH.getText(), txtTenMH.getText(), Integer.parseInt(txtSoTin.getText()), txtKhoa.getText(), maCTDT);
             if(main.CreateMH(mh)) 
             {
@@ -344,6 +348,10 @@ public class pnQuanlyMonHoc extends javax.swing.JFrame {
             !txtKhoa.getText().equals("")&&
             !txtMaMH.getText().equals("")
            ) {
+           if (maCTDT.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maCTDT = String.valueOf(jComboBox1.getSelectedItem());
+            }
             MonHoc mh = new MonHoc(txtMaMH.getText(), txtTenMH.getText(), Integer.parseInt(txtSoTin.getText()), txtKhoa.getText(), maCTDT);
             if(main.UpdateMH(mh)) 
             {

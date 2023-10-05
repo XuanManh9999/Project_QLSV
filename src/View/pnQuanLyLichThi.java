@@ -3,19 +3,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package View;
-
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import DAO.Lich_Thi;
+import Controller.hendle_QLLT;
+import java.awt.Color;
+import java.awt.print.PrinterException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Aspire3
  */
 public class pnQuanLyLichThi extends javax.swing.JFrame {
-
+    hendle_QLLT main = new hendle_QLLT();
+    private String maLT = "";
+    private String maMH = "";
+    Color originalBackgroundColor = null;
+    DefaultTableModel model;
     /**
      * Creates new form pnQuanLyLichThi
      */
     public pnQuanLyLichThi() {
         initComponents();
         setLocationRelativeTo(null);
+        model = (DefaultTableModel) jTable1.getModel();
+         renderData();
     }
 
     /**
@@ -35,7 +52,7 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
         kGradientPanel3 = new com.k33ptoo.components.KGradientPanel();
         txtTimKiemTheoLichThi = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        txtTimKiemTheoMaMon = new javax.swing.JTextField();
+        txtTimKiemTheoTenMon = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -65,6 +82,11 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
         btnSua.setkEndColor(new java.awt.Color(255, 153, 255));
         btnSua.setkHoverForeGround(new java.awt.Color(255, 255, 255));
         btnSua.setkStartColor(new java.awt.Color(204, 102, 255));
+        btnSua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSuaActionPerformed(evt);
+            }
+        });
 
         btnThoat.setText("Thoát");
         btnThoat.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -83,12 +105,22 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
         btnXoa.setkEndColor(new java.awt.Color(255, 153, 153));
         btnXoa.setkHoverForeGround(new java.awt.Color(255, 255, 255));
         btnXoa.setkStartColor(new java.awt.Color(255, 51, 51));
+        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXoaActionPerformed(evt);
+            }
+        });
 
         btnTimKiem.setText("Tìm Kiếm");
         btnTimKiem.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnTimKiem.setkBorderRadius(20);
         btnTimKiem.setkHoverForeGround(new java.awt.Color(255, 255, 255));
         btnTimKiem.setkStartColor(new java.awt.Color(0, 255, 204));
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemActionPerformed(evt);
+            }
+        });
 
         kGradientPanel3.setBackground(new java.awt.Color(255, 204, 204));
         kGradientPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tìm Kiếm", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
@@ -96,13 +128,25 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
         kGradientPanel3.setkEndColor(new java.awt.Color(153, 255, 153));
         kGradientPanel3.setkStartColor(new java.awt.Color(204, 255, 204));
 
+        txtTimKiemTheoLichThi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTimKiemTheoLichThiMouseClicked(evt);
+            }
+        });
+
         jLabel13.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel13.setText("Mã lịch thi:");
 
+        txtTimKiemTheoTenMon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTimKiemTheoTenMonMouseClicked(evt);
+            }
+        });
+
         jLabel14.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel14.setText("Mã môn:");
+        jLabel14.setText("Tên Môn:");
 
         javax.swing.GroupLayout kGradientPanel3Layout = new javax.swing.GroupLayout(kGradientPanel3);
         kGradientPanel3.setLayout(kGradientPanel3Layout);
@@ -113,7 +157,7 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
                 .addGroup(kGradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtTimKiemTheoLichThi, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13)
-                    .addComponent(txtTimKiemTheoMaMon, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTimKiemTheoTenMon, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
@@ -127,7 +171,7 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtTimKiemTheoMaMon, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+                .addComponent(txtTimKiemTheoTenMon, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -143,11 +187,16 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã lịch thi", "Ngày Thi", "Phòng Thi", "Hình Thức Thi", "Mã Môn Học"
+                "Mã Môn Học", "Tên Môn Học", "Số Tín", "Thuộc Khoa", "Mã Lịch Thi", "Ngày Thi", "Phòng Thi", "Hình Thức Thi"
             }
         ));
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jTable1.setGridColor(new java.awt.Color(0, 0, 0));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         kGradientPanel2.setBackground(new java.awt.Color(255, 204, 204));
@@ -186,6 +235,11 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
         kGradientPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 90, -1));
         kGradientPanel2.add(txtMaLichThi, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 200, 30));
 
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
         kGradientPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 200, 30));
 
         btnThem.setText("Thêm");
@@ -241,11 +295,9 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
             .addGroup(kGradientPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(kGradientPanel1Layout.createSequentialGroup()
-                        .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(kGradientPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE))
+                    .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(kGradientPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(kGradientPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(kGradientPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -258,8 +310,8 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(kGradientPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnThoat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 101, Short.MAX_VALUE)))
+                            .addComponent(btnThongKe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -288,12 +340,150 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
+        if (
+        !txtMaLichThi.getText().equals("") &&
+        !txtHinhThucTHi.getText().equals("") &&
+        !txtNgayThi.getText().equals("") &&
+        !txtPhongThi.getText().equals("") 
+        ) {
+            if (maMH.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maMH = String.valueOf(jComboBox1.getSelectedItem());
+            }
+            Lich_Thi lt = new Lich_Thi(txtMaLichThi.getText(), txtNgayThi.getText(), txtPhongThi.getText(), txtHinhThucTHi.getText(), maMH);
+            if (main.createLT(lt)) {
+                JOptionPane.showMessageDialog(rootPane, "Thêm Lịch Thi Thành Công");
+                renderData();
+            }else {
+                JOptionPane.showMessageDialog(rootPane, "Thêm Lịch Thi Không Thành Công");
+            }
+        }else {
+                JOptionPane.showMessageDialog(rootPane, "Các Trường Không Được Rỗng");
+        }
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
-        // TODO add your handling code here:
+    if (jTable1.getRowCount() <= 0) return;
+           MessageFormat  header = new MessageFormat("Danh Sách Lịch Thi Các Môn Học");
+           MessageFormat footer = new MessageFormat("Trang {0, number, integer}");
+           try {
+               jTable1.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+           } catch (PrinterException ex) {
+           }         // TODO add your handling code here:
     }//GEN-LAST:event_btnThongKeActionPerformed
 
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        maMH = "";
+        maMH = String.valueOf(jComboBox1.getSelectedItem());
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
+        // TODO add your handling code here:
+         if (
+        !txtMaLichThi.getText().equals("") &&
+        !txtHinhThucTHi.getText().equals("") &&
+        !txtNgayThi.getText().equals("") &&
+        !txtPhongThi.getText().equals("") 
+        ) {
+              if (maMH.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maMH = String.valueOf(jComboBox1.getSelectedItem());
+            }
+            Lich_Thi lt = new Lich_Thi(txtMaLichThi.getText(), txtNgayThi.getText(), txtPhongThi.getText(), txtHinhThucTHi.getText(), maMH);
+            if (main.updateLT(lt)) {
+                JOptionPane.showMessageDialog(rootPane, "Cập Nhật Lịch Thi Thành Công");
+                renderData();
+            }else {
+                JOptionPane.showMessageDialog(rootPane, "Cập Nhật Lịch Thi Không Thành Công, Lưu Ý Mã Lịch Thi Sẽ Không Cho Phép Cập Nhật");
+            }
+        }else {
+                JOptionPane.showMessageDialog(rootPane, "Các Trường Không Được Rỗng");
+        }
+    }//GEN-LAST:event_btnSuaActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        // TODO add your handling code here:
+        if (main.deleteLT(maLT)) {
+            JOptionPane.showMessageDialog(rootPane, "Xóa Lịch Thi Thành Công");
+            renderData();
+        }else {
+            JOptionPane.showMessageDialog(rootPane, "Xóa Lịch Thi Không Thành Công, Bạn Phải Chọn Lịch Thi Cần Xóa Bằng Cách Click Vào Nó.");
+        }
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        maLT = jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString();
+        txtMaLichThi.setText(maLT);
+        txtHinhThucTHi.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 7).toString());
+        txtNgayThi.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 5).toString());
+        txtPhongThi.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 6).toString());
+        String maMH = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+        var dt = main.getMaMH();
+        int cnt = -1;
+        for (var it : dt) {
+            cnt++;
+            if (maMH.equals(it)) {
+                jComboBox1.setSelectedIndex(cnt);
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void txtTimKiemTheoLichThiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemTheoLichThiMouseClicked
+        // TODO add your handling code here:
+         txtTimKiemTheoTenMon.setEditable(false);
+            txtTimKiemTheoLichThi.setEditable(true);
+           txtTimKiemTheoTenMon.setBackground(Color.LIGHT_GRAY);
+           txtTimKiemTheoLichThi.setBackground(originalBackgroundColor);
+           txtTimKiemTheoTenMon.setText("");
+    }//GEN-LAST:event_txtTimKiemTheoLichThiMouseClicked
+
+    private void txtTimKiemTheoTenMonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimKiemTheoTenMonMouseClicked
+        // TODO add your handling code here:
+                 txtTimKiemTheoLichThi.setEditable(false);
+            txtTimKiemTheoTenMon.setEditable(true);
+           txtTimKiemTheoLichThi.setBackground(Color.LIGHT_GRAY);
+           txtTimKiemTheoTenMon.setBackground(originalBackgroundColor);
+           txtTimKiemTheoLichThi.setText("");
+    }//GEN-LAST:event_txtTimKiemTheoTenMonMouseClicked
+
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        // TODO add your handling code here:
+        if (!txtTimKiemTheoTenMon.getText().equals("") && txtTimKiemTheoLichThi.getText().equals("")) {
+            timKiemThemTenMH();
+        }else if (txtTimKiemTheoTenMon.getText().equals("") && !txtTimKiemTheoLichThi.getText().equals("")){
+            timKiemTheoMaMH();
+        }
+    }//GEN-LAST:event_btnTimKiemActionPerformed
+    private void timKiemThemTenMH () {
+         model.getDataVector().removeAllElements();// Xóa toàn bộ bảng ghi
+        model.fireTableDataChanged();// Thông Báo Sự Thay Đổi
+        var it = main.search_TheoTenMon(txtTimKiemTheoTenMon.getText());
+         try {
+            while (it.next()) {
+                model.addRow(new Object[] {
+                    it.getString(1), it.getString(2), it.getString(3), it.getString(4), it.getString(5), it.getDate(6).toString(), it.getString(7), it.getString(8),
+                });
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(pnQuanLyLichThi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void timKiemTheoMaMH() {
+         model.getDataVector().removeAllElements();// Xóa toàn bộ bảng ghi
+        model.fireTableDataChanged();// Thông Báo Sự Thay Đổi
+        var it = main.search_TheoMaLT(txtTimKiemTheoLichThi.getText());
+         try {
+            while (it.next()) {
+                model.addRow(new Object[] {
+                    it.getString(1), it.getString(2), it.getString(3), it.getString(4), it.getString(5), it.getDate(6).toString(), it.getString(7), it.getString(8),
+                });
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(pnQuanLyLichThi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -355,6 +545,26 @@ public class pnQuanLyLichThi extends javax.swing.JFrame {
     private javax.swing.JTextField txtNgayThi;
     private javax.swing.JTextField txtPhongThi;
     private javax.swing.JTextField txtTimKiemTheoLichThi;
-    private javax.swing.JTextField txtTimKiemTheoMaMon;
+    private javax.swing.JTextField txtTimKiemTheoTenMon;
     // End of variables declaration//GEN-END:variables
+
+    private void renderData() {
+        var it =  main.getData();
+       ArrayList<String> data = main.getMaMH();
+        model.getDataVector().removeAllElements();// Xóa toàn bộ bảng ghi
+        model.fireTableDataChanged();// Thông Báo Sự Thay Đổi
+        try {
+            while (it.next()) {
+                model.addRow(new Object[] {
+                    it.getString(1), it.getString(2), it.getString(3), it.getString(4), it.getString(5), it.getDate(6).toString(), it.getString(7), it.getString(8),
+                });
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(pnQuanLyLichThi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jComboBox1.removeAllItems();
+        for (var ls : data) {
+            jComboBox1.addItem(ls);
+        }
+    }
 }

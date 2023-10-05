@@ -294,7 +294,16 @@ public class pnQuanLyDiem extends javax.swing.JFrame {
     private void kButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton1ActionPerformed
         // TODO add your handling code here:
         try {
+            if (maMH.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maMH = String.valueOf(jComboBox1.getSelectedItem());
+            }
+            if (maSV.equals(null)) {
+                jComboBox2.setSelectedIndex(0);
+                maSV = String.valueOf(jComboBox1.getSelectedItem());
+            }
             Diem diem = new Diem(txtMaDiem.getText(), Integer.parseInt(txtThangDiem10.getText()), txtThangDiemChu.getText(), jTextArea2.getText(), maMH, maSV);
+            
             if(main_diem.createDiem(diem)) {
                 JOptionPane.showMessageDialog(rootPane, "Thêm Điểm Thành Công");
                 renderData();
@@ -378,6 +387,14 @@ public class pnQuanLyDiem extends javax.swing.JFrame {
 
     private void kButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton2ActionPerformed
          try {
+             if (maMH.equals(null)) {
+                jComboBox1.setSelectedIndex(0);
+                maMH = String.valueOf(jComboBox1.getSelectedItem());
+            }
+            if (maSV.equals(null)) {
+                jComboBox2.setSelectedIndex(0);
+                maSV = String.valueOf(jComboBox1.getSelectedItem());
+            }
             Diem diem = new Diem(txtMaDiem.getText(), Integer.parseInt(txtThangDiem10.getText()), txtThangDiemChu.getText(), jTextArea2.getText(), maMH, maSV);
             if(main_diem.updateDiem(diem)) {
                 JOptionPane.showMessageDialog(rootPane, "Cập Nhật Điểm Thành Công");

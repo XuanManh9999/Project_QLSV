@@ -15,6 +15,14 @@ public class Lich_Thi {
     private String hinhThucThi;
     private String maMH;
 
+    public Lich_Thi(String maLT, String ngayThi, String phongThi, String hinhThucThi, String maMH) {
+        this.maLT = maLT;
+        this.ngayThi = ngayThi;
+        this.phongThi = phongThi;
+        this.hinhThucThi = hinhThucThi;
+        this.maMH = maMH;
+    }
+    
     public String getMaLT() {
         return maLT;
     }
